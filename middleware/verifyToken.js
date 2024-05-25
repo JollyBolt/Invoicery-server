@@ -8,8 +8,8 @@ const verifyToken = async(req,res,next) => {
     if(!token) res.status(401).send("Access Denied")
 
     try{
-        const email = jwt.verify(token,secret)
-        req.email = email
+        const id = jwt.verify(token,secret)
+        req.id = id
         next()
     }catch (error) {
         res.status(401).send("Access Denied");   

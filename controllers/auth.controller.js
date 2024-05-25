@@ -14,14 +14,14 @@ const login = async (req, res) => {
     }
     try {
         const { email, password } = req.body
-        const user = await User.findOne({ email: email })
+        const user = await User.findOne({ email: email })  //get required user based on entered email
         if (!user)
             return res.status(401).send("User with this email does not exist.")
         if (user.password !== password)
             return res.status(401).send("Wrong Password.")
 
         const token = jwt.sign({
-            email: email
+            id: user._id     //setting the of document id of obtained user as payload
         }, secret, { expiresIn: '1d' })
         res.status(200).json({ token: token })
     } catch (error) {
