@@ -5,8 +5,8 @@ dotenv.config();
 const getAllCustomers = async (req, res) => {
   try {
     const userId = req.id;
-    let customerList = await Customer.findById({ user: userId });
-    res.status(200).send(customerList);
+    let customerList = await Customer.find({ userId: userId });
+    res.status(200).send(customerList.toArray());
   } catch (e) {
     res.status(500).send("Internal server error occured");
   }
@@ -16,7 +16,7 @@ const createCustomer = async (req, res) => {
   try {
     const userId = req.id;
     const customer = new Customer(req.body);
-    customer.user = userId;
+    customer.userId = userId;
     await customer.save();
     res.status(201).send(customer);
   } catch (e) {

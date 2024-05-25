@@ -48,6 +48,6 @@ const CustomerSchema = new Schema({
   },
 });
 
-const User = mongoose.model("customer", CustomerSchema);
+const Customer = mongoose.model("customer", CustomerSchema);
 
-export default User;
+export default Customer;
