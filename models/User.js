@@ -32,14 +32,14 @@ const UserSchema = new Schema({
       type: String,
       required: true,
     },
+    stateCode: {
+      type: String,
+      required: true,
+    },
     zip: {
       type: String,
       required: true,
     },
-  },
-  stateCode: {
-    type: String,
-    required: true,
   },
   ifsc: {
     type: String,

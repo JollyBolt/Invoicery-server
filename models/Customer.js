@@ -26,25 +26,27 @@ const CustomerSchema = new Schema({
     type: String,
     required: true,
   },
-  street_address: {
-    type: String,
-    required: true,
-  },
-  state: {
-    type: String,
-    required: true,
-  }, 
-  state_code: {
-    type: String,
-    required: true,
-  },
-  city: {
-    type: String,
-    required: true,
-  },
-  zip: {
-    type: String,
-    required: true,
+  address: {
+    streetAddress: {
+      type: String,
+      required: true,
+    },
+    state: {
+      type: String,
+      required: true,
+    },
+    stateCode: {
+      type: String,
+      required: true,
+    },
+    city: {
+      type: String,
+      required: true,
+    },
+    zip: {
+      type: String,
+      required: true,
+    },
   },
 });
 
