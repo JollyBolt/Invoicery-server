@@ -2,7 +2,7 @@ import Customer from "../models/Customers.js";
 import dotenv from "dotenv";
 dotenv.config();
 
-const getCustomers = async (req, res) => {
+const getAllCustomers = async (req, res) => {
   try {
     const userId = req.id;
     let customerList = await Customer.findById({ user: userId });
@@ -41,4 +41,4 @@ const deleteCustomer = async (req, res) => {
     res.status(500).send("Internal server error occured");
   }
 };
-export { getCustomers, createCustomer, editCustomer, deleteCustomer };
+export { getAllCustomers, createCustomer, editCustomer, deleteCustomer };
