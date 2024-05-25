@@ -1,4 +1,4 @@
-import Customer from "../models/Customers.js";
+import Customer from "../models/Customer.js";
 import dotenv from "dotenv";
 dotenv.config();
 
