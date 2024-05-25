@@ -12,6 +12,15 @@ const getAllCustomers = async (req, res) => {
   }
 };
 
+const getCustomer = async (req, res) => {
+  try {
+    const customer = await Customer.findById(req.params.id);
+    res.status(200).send(customer);
+  } catch (e) {
+    res.status(500).send("Internal server error occured");
+  }
+};
+
 const createCustomer = async (req, res) => {
   try {
     const userId = req.id;
@@ -41,4 +50,10 @@ const deleteCustomer = async (req, res) => {
     res.status(500).send("Internal server error occured");
   }
 };
-export { getAllCustomers, createCustomer, editCustomer, deleteCustomer };
+export {
+  getAllCustomers,
+  createCustomer,
+  editCustomer,
+  deleteCustomer,
+  getCustomer,
+};

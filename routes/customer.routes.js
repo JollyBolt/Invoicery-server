@@ -10,6 +10,9 @@ const router = Router();
 //Fetch all customers
 router.get("/getallcustomers", verifyToken, getAllCustomers);
 
+//Fetch single customer
+router.get("/getcustomer/:id", verifyToken, getCustomer);
+
 //Add customer
 router.post("/createcustomer", verifyToken, createCustomer);
 
