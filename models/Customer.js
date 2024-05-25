@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 import { Schema } from "mongoose";
 
 const CustomerSchema = new Schema({
-  user: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "users",
+    ref: "user",
   },
   name: {
     type: String,
