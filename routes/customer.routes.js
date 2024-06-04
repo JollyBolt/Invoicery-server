@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { getAllCustomers } from "../controllers/customer.controller.js";
+import { getCustomer } from "../controllers/customer.controller.js";
 import { createCustomer } from "../controllers/customer.controller.js";
 import { editCustomer } from "../controllers/customer.controller.js";
 import { deleteCustomer } from "../controllers/customer.controller.js";

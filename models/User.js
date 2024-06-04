@@ -19,7 +19,11 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
-  address:{
+  phone: {
+    type: String,
+    required: true,
+  },
+  address: {
     streetAddress: {
       type: String,
       required: true,
@@ -29,10 +33,6 @@ const UserSchema = new Schema({
       required: true,
     },
     state: {
-      type: String,
-      required: true,
-    },
-    stateCode: {
       type: String,
       required: true,
     },
