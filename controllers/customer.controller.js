@@ -27,7 +27,7 @@ const createCustomer = async (req, res) => {
     const customer = new Customer(req.body);
     customer.userId = userId;
     await customer.save();
-    res.status(201).send(customer);
+    res.status(201).json(customer);
   } catch (e) {
     res.status(500).send("Internal server error occured");
   }

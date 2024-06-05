@@ -33,7 +33,7 @@ const login = async (req, res) => {
       secret,
       { expiresIn: "1d" }
     );
-    res.cookie("authToken", token, { expires: new Date().getDate() + 2 }); //send the token as cookie to frontend (cookie exipires 2 days later)
+    // res.cookie("authToken", token, { expires: new Date().getDate() + 2 }); //send the token as cookie to frontend (cookie exipires 2 days later)
     res.status(200).json({ token: token }); //jwt auth token is returned as json
   } catch (error) {
     //if error related to request occurs

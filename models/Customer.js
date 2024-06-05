@@ -4,13 +4,13 @@ import { Schema } from "mongoose";
 const CustomerSchema = new Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "user",
+    ref: "users",
   },
-  name: {
+  contactPerson: {
     type: String,
-    required: true,
+    required: false,
   },
-  org: {
+  client: {
     type: String,
     required: true,
   },
@@ -20,9 +20,9 @@ const CustomerSchema = new Schema({
   },
   email: {
     type: String,
-    required: true,
+    required: false,
   },
-  contact: {
+  phone: {
     type: String,
     required: true,
   },

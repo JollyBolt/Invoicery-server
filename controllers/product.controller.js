@@ -5,8 +5,8 @@ dotenv.config();
 const getAllProducts = async (req, res) => {
     try {
       const userId = req.id;
-      let ProductList = await Product.find({ userId: userId });
-      res.status(200).send(ProductList.toArray());
+      let productList = await Product.find({ userId: userId });
+      res.status(200).send(productList.toArray());
     } catch (e) {
       res.status(500).send("Internal server error occured");
     }
@@ -14,8 +14,8 @@ const getAllProducts = async (req, res) => {
   
   const getProduct = async (req, res) => {
     try {
-      const Product = await Product.findById(req.params.id);
-      res.status(200).send(Product);
+      const product = await Product.findById(req.params.id);
+      res.status(200).send(product);
     } catch (e) {
       res.status(500).send("Internal server error occured");
     }
@@ -24,10 +24,10 @@ const getAllProducts = async (req, res) => {
   const createProduct = async (req, res) => {
     try {
       const userId = req.id;
-      const Product = new Product(req.body);
-      Product.userId = userId;
-      await Product.save();
-      res.status(201).send(Product);
+      const product = new Product(req.body);
+      product.userId = userId;
+      await product.save();
+      res.status(201).json(product);
     } catch (e) {
       res.status(500).send("Internal server error occured");
     }
@@ -35,8 +35,8 @@ const getAllProducts = async (req, res) => {
   
   const editProduct = async (req, res) => {
     try {
-      const Product = await Product.findByIdAndUpdate(req.params.id, req.body);
-      res.status(200).send(Product);
+      const product = await Product.findByIdAndUpdate(req.params.id, req.body);
+      res.status(200).send(product);
     } catch (e) {
       res.status(500).send("Internal server error occured");
     }
@@ -44,8 +44,8 @@ const getAllProducts = async (req, res) => {
   
   const deleteProduct = async (req, res) => {
     try {
-      const Product = await Product.findByIdAndDelete(req.params.id);
-      res.status(200).send(Product);
+      const product = await Product.findByIdAndDelete(req.params.id);
+      res.status(200).send(product);
     } catch (e) {
       res.status(500).send("Internal server error occured");
     }
