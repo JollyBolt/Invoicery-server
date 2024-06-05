@@ -1,6 +1,6 @@
 import User from "../models/User.js";
 import { validationResult } from "express-validator";
-import bcrypt from 'bcryptjs'
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
@@ -33,13 +33,27 @@ const login = async (req, res) => {
       secret,
       { expiresIn: "1d" }
     );
-    // res.cookie("authToken", token, { expires: new Date().getDate() + 2 }); //send the token as cookie to frontend (cookie exipires 2 days later)
-    res.status(200).json({ token: token }); //jwt auth token is returned as json
+    const expiresIn = new Date();
+    expiresIn.setDate(new Date().getDate() + 1); //set expire date to 1 day later
+    res.cookie("authToken", token, { expires: expiresIn, httpOnly: false }); //send the token as cookie to frontend (cookie exipires 2 days later)
+    res.status(200).json({ token }); //jwt auth token is returned as json
   } catch (error) {
     //if error related to request occurs
     console.log(error);
-    res.status(500).send("Internal error occuredd");
+    res.status(500).send("Internal error occured");
   }
+};
+
+const test = async (req, res) => {
+  const expiresIn = new Date();
+  expiresIn.setDate(new Date().getDate() + 1); //set expire date to 1 day later
+  res.cookie("authToken", "token", {
+    expires: expiresIn,
+    httpOnly: false,
+    sameSite: "none",
+    secure: true,
+  }); //send the token as cookie to frontend (cookie exipires 2 days later)
+  res.status(200).send("cookie set"); //jwt auth token is returned as json
 };
 
 const createUser = async (req, res) => {
@@ -70,7 +84,9 @@ const createUser = async (req, res) => {
       secret,
       { expiresIn: "1d" }
     );
-    // res.cookie("authToken", token, { expires: new Date().getDate() + 2 }); //send the token as cookie to frontend (cookie exipires 2 days later)
+    const expiresIn = new Date();
+    expiresIn.setDate(new Date().getDate() + 1); //set expire date to 1 day later
+    res.cookie("authToken", token, { expires: expiresIn}); //send the token as cookie to frontend (cookie exipires 2 days later)
     res.status(201).json(token);
   } catch (error) {
     //if error related to request occurs
@@ -92,4 +108,4 @@ const updateUser = async (req, res) => {
   }
 };
 
-export { login, createUser, updateUser };
+export { login, createUser, updateUser, test };

@@ -3,6 +3,7 @@ import {
   login,
   createUser,
   updateUser,
+  test,
 } from "../controllers/auth.controller.js";
 import { body } from "express-validator";
 import { verifyToken } from "../middleware/verifyToken.js";
@@ -28,5 +29,7 @@ router.route("/createUser").post(
 );
 
 router.route("/updateUser/:id").put(verifyToken, updateUser);
+
+router.route("/test").get(test);
 
 export default router;
