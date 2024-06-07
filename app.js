@@ -11,7 +11,12 @@ dotenv.config();
 const app = express();
 
 app.use(cookieParser());
-app.use(cors({ credentials: true }));
+app.use(
+  cors({
+    credentials: true,
+    origin: ["http://localhost:5173", "http://localhost:5174"],
+  })
+);
 app.use(express.json());
 
 app.use("/api/v1/auth", authRouter);

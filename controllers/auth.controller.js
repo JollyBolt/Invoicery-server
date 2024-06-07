@@ -35,7 +35,12 @@ const login = async (req, res) => {
     );
     const expiresIn = new Date();
     expiresIn.setDate(new Date().getDate() + 1); //set expire date to 1 day later
-    res.cookie("authToken", token, { expires: expiresIn, httpOnly: false }); //send the token as cookie to frontend (cookie exipires 2 days later)
+    res.cookie("authToken", token, {
+      expires: expiresIn,
+      httpOnly: false,
+      sameSite: "none",
+      secure: true,
+    }); //send the token as cookie to frontend (cookie exipires 2 days later)
     res.status(200).json({ token }); //jwt auth token is returned as json
   } catch (error) {
     //if error related to request occurs
@@ -56,7 +61,7 @@ const test = async (req, res) => {
   res.status(200).send("cookie set"); //jwt auth token is returned as json
 };
 
-const createUser = async (req, res) => {
+const signup = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     //error occurs due to invalid input
@@ -86,7 +91,12 @@ const createUser = async (req, res) => {
     );
     const expiresIn = new Date();
     expiresIn.setDate(new Date().getDate() + 1); //set expire date to 1 day later
-    res.cookie("authToken", token, { expires: expiresIn}); //send the token as cookie to frontend (cookie exipires 2 days later)
+    res.cookie("authToken", token, {
+      expires: expiresIn,
+      httpOnly: false,
+      sameSite: "none",
+      secure: true,
+    }); //send the token as cookie to frontend (cookie exipires 2 days later)
     res.status(201).json(token);
   } catch (error) {
     //if error related to request occurs
@@ -108,4 +118,4 @@ const updateUser = async (req, res) => {
   }
 };
 
-export { login, createUser, updateUser, test };
+export { login, signup, updateUser, test };
