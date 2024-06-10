@@ -4,7 +4,7 @@ import { Schema } from "mongoose";
 const InvoiceSchema = new Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "user",
+    ref: "userAuth",
   },
   customer: {
     name: {

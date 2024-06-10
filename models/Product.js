@@ -4,7 +4,7 @@ import { Schema } from "mongoose";
 const ProductSchema = new Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "users",
+    ref: "userAuth",
   },
   name: {
     type: String,
