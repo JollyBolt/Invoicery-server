@@ -12,6 +12,18 @@ const getUser = async (req, res) => {
   }
 }
 
+const createUser = async (req, res) => { 
+  try {
+    const userId = req.id
+    const user = new User(req.body)
+    user.userId = userId
+    await user.save()
+    res.status(201).json(user)
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
 const updateUser = async (req, res) => {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
@@ -26,4 +38,4 @@ const updateUser = async (req, res) => {
   }
 }
 
-export { updateUser, getUser }
+export { updateUser, getUser, createUser }
