@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import authRouter from "./routes/auth.routes.js";
+import userRouter from "./routes/user.routes.js";
 import customerRouter from "./routes/customer.routes.js";
 import productRouter from "./routes/product.routes.js";
 import mongoose from "mongoose";
@@ -20,6 +21,7 @@ app.use(
 app.use(express.json());
 
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/user", userRouter);
 app.use("/api/v1/customer", customerRouter);
 app.use("/api/v1/product", productRouter);
 

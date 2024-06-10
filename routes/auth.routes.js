@@ -2,7 +2,6 @@ import { Router } from "express";
 import {
   login,
   signup,
-  updateUser,
   test,
 } from "../controllers/auth.controller.js";
 import { body } from "express-validator";
@@ -28,7 +27,6 @@ router.route("/signup").post(
   signup
 );
 
-router.route("/updateUser/:id").put(verifyToken, updateUser);
 
 router.route("/test").get(test);
 
