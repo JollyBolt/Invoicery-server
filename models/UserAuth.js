@@ -13,7 +13,7 @@ const UserAuthSchema = new Schema({
   },
   password: {
     type: String,
-    required: true,
+    default: "null",
   },
   googleLogin: {
     type: Boolean,
@@ -21,9 +21,9 @@ const UserAuthSchema = new Schema({
   },
   googleCredentials: {
     type: String,
-    required: true,
     unique: true,
-  }
+    default: "null",
+  },
 })
 
 const UserAuth = mongoose.model("userAuth", UserAuthSchema)
