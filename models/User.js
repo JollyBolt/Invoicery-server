@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 import { Schema } from "mongoose";
 
 const UserSchema = new Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "userAuth",
+  },
   name: {
     type: String,
     required: true,
@@ -15,10 +19,6 @@ const UserSchema = new Schema({
     required: true,
     unique: true,
   },
-  // password: {
-  //   type: String,
-  //   required: true,
-  // },
   phone: {
     type: String,
     required: true,
@@ -41,15 +41,25 @@ const UserSchema = new Schema({
       required: true,
     },
   },
-  ifsc: {
-    type: String,
-    required: true,
+  banking: {
+    bankName: {
+      type: String,
+    },
+    branch: {
+      type: String,
+    },
+    accountNumber: {
+      type: String,
+    },
+    ifsc: {
+      type: String,
+    },
   },
   gstin: {
     type: String,
     required: true,
   },
-});
+})
 
 const User = mongoose.model("user", UserSchema);
 
