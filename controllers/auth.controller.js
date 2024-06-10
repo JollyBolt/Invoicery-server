@@ -19,9 +19,9 @@ const login = async (req, res) => {
       const { password } = req.body
       if (!user) {
         //if user doesn't exist
-        return res.status(401).send("UserAuth with this email does not exist.")
+        return res.status(401).send("User with this email does not exist.")
       }
-      if (!passwordLogin)
+      if (!user.passwordLogin)
         return res.status(401).send("You did not sign up using password.")
       const passwordCompare = await bcrypt.compare(password, user.password) //comparing password(1st arg) entered and password hash stored in db(2nd arg)
       if (!passwordCompare) {
