@@ -5,7 +5,7 @@ dotenv.config()
 
 const getUser = async (req, res) => {
   try {
-    const user = await User.findOne({ _id: req.id })
+    const user = await User.findOne({ userId: req.id })
     res.send(user)
   } catch (e) {
     console.log(e.message)
