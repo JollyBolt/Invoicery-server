@@ -12,6 +12,7 @@ const ProductSchema = new Schema({
   },
   hsn_code: {
     type: String,
+    default:"-"
   },
   price: {
     type: Number,
