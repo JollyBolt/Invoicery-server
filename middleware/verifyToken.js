@@ -5,7 +5,7 @@ const secret = process.env.JWT_SECRET
 const verifyToken = async(req,res,next) => {
 
     const token = req.header('Authorization').split(' ')[1]
-    if(!token) res.status(401).send("Access Denied")
+    if(!token) res.status(401).send("You are not logged in¸")
 
     try{
         const payload = jwt.verify(token,secret)
