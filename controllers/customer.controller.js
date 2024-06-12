@@ -6,7 +6,7 @@ const getAllCustomers = async (req, res) => {
   try {
     const userId = req.id;
     let customerList = await Customer.find({ userId: userId });
-    res.status(200).send(customerList.toArray());
+    res.status(200).send(customerList);
   } catch (e) {
     res.status(500).send("Internal server error occured");
   }
