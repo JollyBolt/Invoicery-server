@@ -6,8 +6,9 @@ const getAllProducts = async (req, res) => {
     try {
       const userId = req.id;
       let productList = await Product.find({ userId: userId });
-      res.status(200).send(productList.toArray());
+      res.status(200).send(productList);
     } catch (e) {
+      console.log(e.message)
       res.status(500).send("Internal server error occured");
     }
   };
