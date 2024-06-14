@@ -6,12 +6,32 @@ const InvoiceSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "userAuth",
   },
-  customer: {
-    name: {
+  template: {
+    type: String,
+    required: true
+  },
+  invoiceNumber: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  invoiceDate: {
+    day: {
       type: String,
       required: true,
     },
-    org: {
+    month: {
+      type: String,
+      required: true,
+    },
+    year: {
+      type: String,
+      required: true,
+    },
+
+  },
+  customer: {
+    name: {
       type: String,
       required: true,
     },
@@ -19,34 +39,64 @@ const InvoiceSchema = new Schema({
       type: String,
       required: true,
     },
-    email: {
+    contactPerson: {
+      type: String,
+    },
+    phone: {
       type: String,
       required: true,
     },
-    contact: {
-      type: String,
-      required: true,
-    },
-    street_address: {
-      type: String,
-      required: true,
-    },
-    state: {
-      type: String,
-      required: true,
-    },
-    state_code: {
-      type: String,
-      required: true,
-    },
-    city: {
-      type: String,
-      required: true,
-    },
-    zip: {
-      type: String,
-      required: true,
-    },
+    address: {
+      billing: [
+        {
+          streetAddress: {
+            type: String,
+            required: true,
+          },
+          state: {
+            type: String,
+            required: true,
+          },
+          stateCode: {
+            type: String,
+            required: true,
+          },
+          city: {
+            type: String,
+            required: true,
+          },
+          zip: {
+            type: String,
+            required: true,
+          },
+        }
+
+      ],
+      shipping: [
+        {
+          streetAddress: {
+            type: String,
+            required: true,
+          },
+          state: {
+            type: String,
+            required: true,
+          },
+          stateCode: {
+            type: String,
+            required: true,
+          },
+          city: {
+            type: String,
+            required: true,
+          },
+          zip: {
+            type: String,
+            required: true,
+          },
+        }
+      ]
+    }
   },
   products: [
     {
@@ -54,7 +104,7 @@ const InvoiceSchema = new Schema({
         type: String,
         required: true,
       },
-      hsn_code: {
+      hsnCode: {
         type: String,
       },
       price: {
@@ -65,36 +115,38 @@ const InvoiceSchema = new Schema({
         type: Number,
         required: true,
       },
+      discount: {
+        value: {
+          type: Number,
+          required: false,
+        },
+        type: {
+          type: String,
+          required: false,
+        },
+      },
     },
   ],
   amount: {
     type: Number,
     required: true,
   },
-  discount: {
-    value: {
-      type: Number,
-      required: false,
-    },
-    type: {
-      type: String,
-      required: false,
-    },
-  },
   taxes: {
     igst: {
       type: Number,
-      required: true,
+      required: false,
     },
     cgst: {
       type: Number,
-      required: true,
+      required: false,
     },
     sgst: {
       type: Number,
-      required: true,
+      required: false,
     },
-  },
+  }, termsNConditions: [
+    { tnc: { type: String, required: false } }
+  ]
 });
 
 const Invoice = mongoose.model("invoice", InvoiceSchema);
