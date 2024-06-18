@@ -26,7 +26,7 @@ const CustomerSchema = new Schema({
     type: String,
     required: true,
   },
-  address: {
+  billingAddresses: [{
     streetAddress: {
       type: String,
       required: true,
@@ -47,7 +47,7 @@ const CustomerSchema = new Schema({
       type: String,
       required: true,
     },
-  },
+  }],
 });
 
 const Customer = mongoose.model("customer", CustomerSchema);
