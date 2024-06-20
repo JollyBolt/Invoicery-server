@@ -21,7 +21,7 @@ const InvoiceSchema = new Schema({
       required: true,
     },
     month: {
-      type: String,
+      type: Number,
       required: true,
     },
     year: {
