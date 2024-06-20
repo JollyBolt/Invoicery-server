@@ -10,35 +10,42 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
-  org: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   phone: {
     type: String,
     required: true,
   },
-  address: {
-    streetAddress: {
+  org: {
+    name:{
+      type: String,
+      required: true,
+
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    gstin: {
       type: String,
       required: true,
     },
-    city: {
-      type: String,
-      required: true,
-    },
-    state: {
-      type: String,
-      required: true,
-    },
-    zip: {
-      type: String,
-      required: true,
+    address: {
+      streetAddress: {
+        type: String,
+        required: true,
+      },
+      city: {
+        type: String,
+        required: true,
+      },
+      state: {
+        type: String,
+        required: true,
+      },
+      zip: {
+        type: String,
+        required: true,
+      },
     },
   },
   banking: {
@@ -54,10 +61,6 @@ const UserSchema = new Schema({
     ifsc: {
       type: String,
     },
-  },
-  gstin: {
-    type: String,
-    required: true,
   },
 })
 
