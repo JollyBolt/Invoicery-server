@@ -6,7 +6,7 @@ const getAllInvoices = async (req, res) => {
   try {
     const userId = req.id;
     let invoiceList = await Invoice.find({ userId: userId });
-    res.status(200).send(invoiceList.toArray());
+    res.status(200).send(invoiceList);
   } catch (e) {
     res.status(500).send("Internal server error occured");
   }
