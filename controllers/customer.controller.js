@@ -5,9 +5,9 @@ dotenv.config()
 const getAllCustomers = async (req, res) => {
   try {
     const userId = req.id
-    let search = req.query.search || ""
-    const page = req.query.page || 0
-    const limit = req.query.limit || 10
+    let search = req.query.search
+    const page = req.query.page
+    const limit = req.query.limit
     let customerList = await Customer.find({
       userId: userId,
       client: { $regex: search , $options: 'i' },
