@@ -1,4 +1,4 @@
-import Invoice from "../models/Invoice";
+import Invoice from "../models/Invoice.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -7,6 +7,15 @@ const getAllInvoices = async (req, res) => {
     const userId = req.id;
     let invoiceList = await Invoice.find({ userId: userId });
     res.status(200).send(invoiceList);
+  } catch (e) {
+    res.status(500).send("Internal server error occured");
+  }
+};
+
+const getSingleInvoice = async (req, res) => {
+  try {
+    const invoice = await Invoice.findById(req.params.id);
+    res.status(200).send(invoice);
   } catch (e) {
     res.status(500).send("Internal server error occured");
   }
@@ -41,4 +50,4 @@ const deleteInvoice = async (req, res) => {
     res.status(500).send("Internal server error occured");
   }
 };
-export { getAllInvoices, createInvoice, editInvoice, deleteInvoice };
+export { getAllInvoices, createInvoice, deleteInvoice,getSingleInvoice };

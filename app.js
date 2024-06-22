@@ -4,6 +4,7 @@ import authRouter from "./routes/auth.routes.js";
 import userRouter from "./routes/user.routes.js";
 import customerRouter from "./routes/customer.routes.js";
 import productRouter from "./routes/product.routes.js";
+import invoiceRouter from "./routes/invoice.routes.js";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
@@ -24,6 +25,7 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/customer", customerRouter);
 app.use("/api/v1/product", productRouter);
+app.use("/api/v1/invoice", invoiceRouter);
 
 app.get("/", (req, res) => {
   res.json("Hello World");
