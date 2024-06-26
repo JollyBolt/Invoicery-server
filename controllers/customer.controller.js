@@ -5,13 +5,16 @@ dotenv.config()
 const getAllCustomers = async (req, res) => {
   try {
     const userId = req.id
-    let search = req.query.search
+    const search = req.query.search
     const page = req.query.page
     const limit = req.query.limit
     let customerList = await Customer.find({
       userId: userId,
-      client: { $regex: search , $options: 'i' },
-    }).skip(page*limit).limit(limit)
+      client: { $regex: search, $options: "i" },
+    })
+      .skip(page * limit)
+      .limit(limit)
+    
     res.status(200).send(customerList)
   } catch (e) {
     res.status(500).send("Internal server error occured")
