@@ -12,8 +12,14 @@ const verifyToken = async(req,res,next) => {
         req.id = payload.id  //this id is _id of user
         next()
     } catch (error) {
-        console.log(error)
-        res.status(500).send(error);   
+        console.log({
+          msg: "Error occured in verifyToken",
+          error: e.message,
+        })
+        res.status(500).send({
+          msg: "Internal server error occured",
+          error: e.message,
+        })
     }
     
 }

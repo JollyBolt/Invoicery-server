@@ -54,8 +54,14 @@ const login = async (req, res) => {
     res.status(200).json({ token }) //jwt auth token is returned as json
   } catch (error) {
     //if error related to request occurs
-    console.log(error)
-    res.status(500).send("Internal error occured")
+    console.log({
+      msg: "Error occured in login",
+      error: e.message,
+    })
+    res.status(500).send({
+      msg: "Internal server error occured",
+      error: e.message,
+    })
   }
 }
 
@@ -79,7 +85,7 @@ const signup = async (req, res) => {
   }
   try {
     let user = await UserAuth.findOne({ email: req.body.email }) //checking if user with email already exists
-    // console.log(user)
+
     if (user) {
       //handling if user with email already exists
       return res
@@ -119,8 +125,14 @@ const signup = async (req, res) => {
     res.status(201).json({ token, user })
   } catch (error) {
     //if error related to request occurs
-    res.status(500).send("Internal error occured")
-    // res.status(500).json({'error':error});
+    console.log({
+      msg: "Error occured in signup",
+      error: e.message,
+    })
+    res.status(500).send({
+      msg: "Internal server error occured",
+      error: e.message,
+    })
   }
 }
 

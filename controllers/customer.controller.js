@@ -14,19 +14,33 @@ const getAllCustomers = async (req, res) => {
     })
       .skip(page * limit)
       .limit(limit)
-    
+
     res.status(200).send(customerList)
   } catch (e) {
-    res.status(500).send("Internal server error occured")
+    console.log({
+      msg: "Error occured in getAllCustomers",
+      error: e.message,
+    })
+    res.status(500).send({
+      msg: "Internal server error occured",
+      error: e.message,
+    })
   }
 }
 
 const getCustomer = async (req, res) => {
   try {
-    const customer = await Customer.findById(req.params.id)
+    const customer = await Customer.find({ _id: req.query.id })
     res.status(200).send(customer)
   } catch (e) {
-    res.status(500).send("Internal server error occured")
+    console.log({
+      msg: "Error occured in getCustomer",
+      error: e.message,
+    })
+    res.status(500).send({
+      msg: "Internal server error occured",
+      error: e.message,
+    })
   }
 }
 
@@ -38,7 +52,14 @@ const createCustomer = async (req, res) => {
     await customer.save()
     res.status(201).json(customer)
   } catch (e) {
-    res.status(500).send("Internal server error occured")
+    console.log({
+      msg: "Error occured in createCustomers",
+      error: e.message,
+    })
+    res.status(500).send({
+      msg: "Internal server error occured",
+      error: e.message,
+    })
   }
 }
 
@@ -48,7 +69,14 @@ const editCustomer = async (req, res) => {
     const customer = await Customer.findByIdAndUpdate(req.params.id, {...req.body,userId})
     res.status(200).send(customer)
   } catch (e) {
-    res.status(500).send("Internal server error occured")
+    console.log({
+      msg: "Error occured in editCustomers",
+      error: e.message,
+    })
+    res.status(500).send({
+      msg: "Internal server error occured",
+      error: e.message,
+    })
   }
 }
 
@@ -57,7 +85,14 @@ const deleteCustomer = async (req, res) => {
     const customer = await Customer.findByIdAndDelete(req.params.id)
     res.status(200).send(customer)
   } catch (e) {
-    res.status(500).send("Internal server error occured")
+    console.log({
+      msg: "Error occured in deleteCustomers",
+      error: e.message,
+    })
+    res.status(500).send({
+      msg: "Internal server error occured",
+      error: e.message,
+    })
   }
 }
 export {

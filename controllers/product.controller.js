@@ -14,11 +14,17 @@ const getAllProducts = async (req, res) => {
     })
       .skip(page * limit)
       .limit(limit)
-    
+
     res.status(200).send(productList)
   } catch (e) {
-    console.log(e.message)
-    res.status(500).send("Internal server error occured")
+    console.log({
+      msg: "Error occured in getAllProducts",
+      error: e.message,
+    })
+    res.status(500).send({
+      msg: "Internal server error occured",
+      error: e.message,
+    })
   }
 }
 
@@ -27,7 +33,14 @@ const getProduct = async (req, res) => {
     const product = await Product.findById(req.params.id)
     res.status(200).send(product)
   } catch (e) {
-    res.status(500).send("Internal server error occured")
+    console.log({
+      msg: "Error occured in getProduct",
+      error: e.message,
+    })
+    res.status(500).send({
+      msg: "Internal server error occured",
+      error: e.message,
+    })
   }
 }
 
@@ -39,7 +52,14 @@ const createProduct = async (req, res) => {
     await product.save()
     res.status(201).json(product)
   } catch (e) {
-    res.status(500).send("Internal server error occured")
+    console.log({
+      msg: "Error occured in createProduct",
+      error: e.message,
+    })
+    res.status(500).send({
+      msg: "Internal server error occured",
+      error: e.message,
+    })
   }
 }
 
@@ -49,7 +69,14 @@ const editProduct = async (req, res) => {
     const product = await Product.findByIdAndUpdate(req.params.id, {...req.body,userId})
     res.status(200).send(product)
   } catch (e) {
-    res.status(500).send("Internal server error occured")
+    console.log({
+      msg: "Error occured in editProduct",
+      error: e.message,
+    })
+    res.status(500).send({
+      msg: "Internal server error occured",
+      error: e.message,
+    })
   }
 }
 
@@ -58,7 +85,14 @@ const deleteProduct = async (req, res) => {
     const product = await Product.findByIdAndDelete(req.params.id)
     res.status(200).send(product)
   } catch (e) {
-    res.status(500).send("Internal server error occured")
+    console.log({
+      msg: "Error occured in deleteProduct",
+      error: e.message,
+    })
+    res.status(500).send({
+      msg: "Internal server error occured",
+      error: e.message,
+    })
   }
 }
 export { getAllProducts, createProduct, editProduct, deleteProduct, getProduct }
