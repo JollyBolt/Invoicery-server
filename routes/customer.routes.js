@@ -12,7 +12,7 @@ const router = Router();
 router.get("/getallcustomers", verifyToken, getAllCustomers);
 
 //Fetch single customer
-router.get("/getcustomer/:id", verifyToken, getCustomer);
+router.get("/getcustomer", verifyToken, getCustomer);
 
 //Add customer
 router
