@@ -8,12 +8,12 @@ const InvoiceSchema = new Schema({
   },
   template: {
     type: String,
-    required: true
+    required: true,
   },
   invoiceNumber: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   invoiceDate: {
     day: {
@@ -28,7 +28,6 @@ const InvoiceSchema = new Schema({
       type: String,
       required: true,
     },
-
   },
   customer: {
     name: {
@@ -69,8 +68,11 @@ const InvoiceSchema = new Schema({
             type: String,
             required: true,
           },
-        }
-
+          country: {
+            type: String,
+            required: true,
+          },
+        },
       ],
       shipping: [
         {
@@ -94,9 +96,13 @@ const InvoiceSchema = new Schema({
             type: String,
             required: true,
           },
-        }
-      ]
-    }
+          country: {
+            type: String,
+            required: true,
+          },
+        },
+      ],
+    },
   },
   products: [
     {
@@ -104,7 +110,7 @@ const InvoiceSchema = new Schema({
         type: String,
         required: true,
       },
-      hsnCode: {
+      hsn_code: {
         type: String,
       },
       price: {
@@ -125,9 +131,17 @@ const InvoiceSchema = new Schema({
           required: false,
         },
       },
+      priceAfterDiscount: {
+        type: Number,
+        required: true,
+      },
+      amount: {
+        type: Number,
+        required: true,
+      }
     },
   ],
-  amount: {
+  totalAmount: {
     type: Number,
     required: true,
   },
@@ -144,10 +158,9 @@ const InvoiceSchema = new Schema({
       type: Number,
       required: false,
     },
-  }, termsNConditions: [
-    { tnc: { type: String, required: false } }
-  ]
-});
+  },
+  termsNConditions: [{ tnc: { type: String, required: false } }],
+})
 
 const Invoice = mongoose.model("invoice", InvoiceSchema);
 
