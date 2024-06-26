@@ -45,7 +45,8 @@ const createProduct = async (req, res) => {
 
 const editProduct = async (req, res) => {
   try {
-    const product = await Product.findByIdAndUpdate(req.params.id, req.body)
+    const userId = req.id
+    const product = await Product.findByIdAndUpdate(req.params.id, {...req.body,userId})
     res.status(200).send(product)
   } catch (e) {
     res.status(500).send("Internal server error occured")
