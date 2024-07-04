@@ -11,7 +11,7 @@ const verifyToken = async(req,res,next) => {
         const payload = jwt.verify(token,secret)
         req.id = payload.id  //this id is _id of user
         next()
-    } catch (error) {
+    } catch (e) {
         console.log({
           msg: "Error occured in verifyToken",
           error: e.message,
