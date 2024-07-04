@@ -8,6 +8,7 @@ const getAllCustomers = async (req, res) => {
     const search = req.query.search
     const page = req.query.page
     const limit = req.query.limit
+    const pageCount = Math.ceil((await Customer.find().count())/limit)
     let customerList = await Customer.find({
       userId: userId,
       client: { $regex: search, $options: "i" },
@@ -15,7 +16,7 @@ const getAllCustomers = async (req, res) => {
       .skip(page * limit)
       .limit(limit)
 
-    res.status(200).send(customerList)
+    res.status(200).send({pageCount,customers:customerList})
   } catch (e) {
     console.log({
       msg: "Error occured in getAllCustomers",

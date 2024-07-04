@@ -5,7 +5,15 @@ dotenv.config()
 const getAllInvoices = async (req, res) => {
   try {
     const userId = req.id
-    let invoiceList = await Invoice.find({ userId: userId })
+    const search = req.query.search
+    const page = req.query.page
+    const limit = req.query.limit
+    let invoiceList = await Product.find({
+      userId: userId,
+      customer: { name: { $regex: search, $options: "i" } },
+    })
+      .skip(page * limit)
+      .limit(limit)
     res.status(200).send(invoiceList)
   } catch (e) {
     console.log({

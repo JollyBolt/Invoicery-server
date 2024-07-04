@@ -8,6 +8,7 @@ const getAllProducts = async (req, res) => {
     const search = req.query.search
     const page = req.query.page
     const limit = req.query.limit
+    const pageCount = Math.ceil((await Product.find().count()) / limit)
     let productList = await Product.find({
       userId: userId,
       name: { $regex: search, $options: "i" },
@@ -15,7 +16,7 @@ const getAllProducts = async (req, res) => {
       .skip(page * limit)
       .limit(limit)
 
-    res.status(200).send(productList)
+    res.status(200).send({ pageCount,products:productList })
   } catch (e) {
     console.log({
       msg: "Error occured in getAllProducts",
