@@ -32,7 +32,7 @@ const getAllCustomers = async (req, res) => {
 const getCustomer = async (req, res) => {
   try {
     const customer = await Customer.find({ _id: req.query.id })
-    res.status(200).send(customer)
+    res.status(200).send({ pageCount: 1, customers: customer })
   } catch (e) {
     console.log({
       msg: "Error occured in getCustomer",
