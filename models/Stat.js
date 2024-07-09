@@ -14,7 +14,7 @@ const StatSchema = new Schema({
     type: Number,
     default: 0,
   },
-  totalInvoices: {
+  totalCustomers: {
     type: Number,
     default: 0,
   },
