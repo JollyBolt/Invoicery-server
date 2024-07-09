@@ -1,4 +1,5 @@
 import Invoice from "../models/Invoice.js"
+import Stat from "../models/Stat.js"
 import dotenv from "dotenv"
 dotenv.config()
 
@@ -45,10 +46,18 @@ const getSingleInvoice = async (req, res) => {
 
 const createInvoice = async (req, res) => {
   try {
+    //creating invoice in DB
     const userId = req.id
     const invoice = new Invoice(req.body)
     invoice.userId = userId
     await invoice.save()
+
+    //Editing Stats associated to user
+    const total=req.body.totalAmount
+    // const stats = await Stat.findOneAndUpdate(
+    //   { userId },
+    //   { $inc: { totalRevenue: total } },
+    // )
     res.status(201).send(invoice)
   } catch (e) {
     console.log({

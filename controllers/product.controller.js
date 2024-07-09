@@ -1,4 +1,5 @@
 import Product from "../models/Product.js"
+import Stat from "../models/Stat.js"
 import dotenv from "dotenv"
 dotenv.config()
 
@@ -47,10 +48,18 @@ const getProduct = async (req, res) => {
 
 const createProduct = async (req, res) => {
   try {
+    //creating product in DB
     const userId = req.id
     const product = new Product(req.body)
     product.userId = userId
     await product.save()
+
+    //Editing Stats associated to user
+    const stats = await Stat.findOneAndUpdate(
+      { userId },
+      { $inc: { totalProducts: 1 } },
+    )
+
     res.status(201).json(product)
   } catch (e) {
     console.log({
