@@ -1,4 +1,5 @@
 import Customer from "../models/Customer.js"
+import Stat from "../models/Stat.js"
 import dotenv from "dotenv"
 dotenv.config()
 
@@ -47,10 +48,18 @@ const getCustomer = async (req, res) => {
 
 const createCustomer = async (req, res) => {
   try {
+        //creating customer in DB
     const userId = req.id
     const customer = new Customer(req.body)
     customer.userId = userId
     await customer.save()
+
+        //Editing Stats associated to user
+        const stats = await Stat.findOneAndUpdate(
+          { userId },
+          { $inc: { totalCustomers: 1 } },
+        )
+
     res.status(201).json(customer)
   } catch (e) {
     console.log({

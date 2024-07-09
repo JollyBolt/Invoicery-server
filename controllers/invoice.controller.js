@@ -54,10 +54,10 @@ const createInvoice = async (req, res) => {
 
     //Editing Stats associated to user
     const total=req.body.totalAmount
-    // const stats = await Stat.findOneAndUpdate(
-    //   { userId },
-    //   { $inc: { totalRevenue: total } },
-    // )
+    const stats = await Stat.findOneAndUpdate(
+      { userId },
+      { $inc: { totalRevenue: total,totalInvoices: 1 } },
+    )
     res.status(201).send(invoice)
   } catch (e) {
     console.log({
