@@ -131,14 +131,14 @@ const InvoiceSchema = new Schema({
           required: false,
         },
       },
-      priceAfterDiscount: {
+      finalPrice: {
         type: Number,
         required: true,
       },
       amount: {
         type: Number,
         required: true,
-      }
+      },
     },
   ],
   totalAmount: {
@@ -149,17 +149,22 @@ const InvoiceSchema = new Schema({
     igst: {
       type: Number,
       required: false,
+      default: 0,
     },
     cgst: {
       type: Number,
       required: false,
+      default: 0,
     },
     sgst: {
       type: Number,
       required: false,
+      default: 0,
     },
   },
-  termsNConditions: [{ tnc: { type: String, required: false } }],
+  termsNConditions: {
+    type: [String],
+  },
 })
 
 const Invoice = mongoose.model("invoice", InvoiceSchema);
