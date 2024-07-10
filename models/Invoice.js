@@ -15,7 +15,7 @@ const InvoiceSchema = new Schema({
     required: true,
     unique: true,
   },
-  purchaseOrder:{
+  purchaseOrder: {
     type: String,
   },
   invoiceDate: {
@@ -49,62 +49,58 @@ const InvoiceSchema = new Schema({
       required: true,
     },
     address: {
-      billing: [
-        {
-          streetAddress: {
-            type: String,
-            required: true,
-          },
-          state: {
-            type: String,
-            required: true,
-          },
-          stateCode: {
-            type: String,
-            required: true,
-          },
-          city: {
-            type: String,
-            required: true,
-          },
-          zip: {
-            type: String,
-            required: true,
-          },
-          country: {
-            type: String,
-            required: true,
-          },
+      billing: {
+        streetAddress: {
+          type: String,
+          required: true,
         },
-      ],
-      shipping: [
-        {
-          streetAddress: {
-            type: String,
-            required: true,
-          },
-          state: {
-            type: String,
-            required: true,
-          },
-          stateCode: {
-            type: String,
-            required: true,
-          },
-          city: {
-            type: String,
-            required: true,
-          },
-          zip: {
-            type: String,
-            required: true,
-          },
-          country: {
-            type: String,
-            required: true,
-          },
+        state: {
+          type: String,
+          required: true,
         },
-      ],
+        stateCode: {
+          type: String,
+          required: true,
+        },
+        city: {
+          type: String,
+          required: true,
+        },
+        zip: {
+          type: String,
+          required: true,
+        },
+        country: {
+          type: String,
+          required: true,
+        },
+      },
+      shipping: {
+        streetAddress: {
+          type: String,
+          required: true,
+        },
+        state: {
+          type: String,
+          required: true,
+        },
+        stateCode: {
+          type: String,
+          required: true,
+        },
+        city: {
+          type: String,
+          required: true,
+        },
+        zip: {
+          type: String,
+          required: true,
+        },
+        country: {
+          type: String,
+          required: true,
+        },
+      },
     },
   },
   products: [
