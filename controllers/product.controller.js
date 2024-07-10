@@ -94,6 +94,12 @@ const deleteProduct = async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id)
     res.status(200).send(product)
+
+    //Editing Stats associated to user
+    const stats = await Stat.findOneAndUpdate(
+      { userId:req.id },
+      { $inc: { totalProducts: -1 } },
+    )
   } catch (e) {
     console.log({
       msg: "Error occured in deleteProduct",

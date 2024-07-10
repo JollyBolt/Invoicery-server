@@ -9,7 +9,7 @@ const getAllCustomers = async (req, res) => {
     const search = req.query.search
     const page = req.query.page
     const limit = req.query.limit
-    const pageCount = Math.ceil((await Customer.find().count())/limit)
+    const pageCount = Math.ceil((await Customer.find().count()) / limit)
     let customerList = await Customer.find({
       userId: userId,
       client: { $regex: search, $options: "i" },
@@ -17,7 +17,7 @@ const getAllCustomers = async (req, res) => {
       .skip(page * limit)
       .limit(limit)
 
-    res.status(200).send({pageCount,customers:customerList})
+    res.status(200).send({ pageCount, customers: customerList })
   } catch (e) {
     console.log({
       msg: "Error occured in getAllCustomers",
@@ -48,17 +48,17 @@ const getCustomer = async (req, res) => {
 
 const createCustomer = async (req, res) => {
   try {
-        //creating customer in DB
+    //creating customer in DB
     const userId = req.id
     const customer = new Customer(req.body)
     customer.userId = userId
     await customer.save()
 
-        //Editing Stats associated to user
-        const stats = await Stat.findOneAndUpdate(
-          { userId },
-          { $inc: { totalCustomers: 1 } },
-        )
+    //Editing Stats associated to user
+    const stats = await Stat.findOneAndUpdate(
+      { userId },
+      { $inc: { totalCustomers: 1 } },
+    )
 
     res.status(201).json(customer)
   } catch (e) {
@@ -76,7 +76,7 @@ const createCustomer = async (req, res) => {
 const editCustomer = async (req, res) => {
   try {
     const userId = req.id
-    const customer = await Customer.findByIdAndUpdate(req.params.id, {...req.body,userId})
+    const customer = await Customer.findByIdAndUpdate(req.params.id, { ...req.body, userId })
     res.status(200).send(customer)
   } catch (e) {
     console.log({
@@ -93,6 +93,12 @@ const editCustomer = async (req, res) => {
 const deleteCustomer = async (req, res) => {
   try {
     const customer = await Customer.findByIdAndDelete(req.params.id)
+
+    //Editing Stats associated to user
+    const stats = await Stat.findOneAndUpdate(
+      { userId:req.id },
+      { $inc: { totalCustomers: -1 } },
+    )
     res.status(200).send(customer)
   } catch (e) {
     console.log({

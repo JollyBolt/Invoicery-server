@@ -6,7 +6,7 @@ const getStats = async (req, res) => {
   try {
     const userId = req.id
     const stats = await Stat.findOne({ userId })
-    return res.status(200).json({ stats })
+    res.status(200).json({ stats })
   } catch (e) {
     console.log({
       msg: "Error occured in getStats",

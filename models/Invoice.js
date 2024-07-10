@@ -15,6 +15,9 @@ const InvoiceSchema = new Schema({
     required: true,
     unique: true,
   },
+  purchaseOrder:{
+    type: String,
+  },
   invoiceDate: {
     day: {
       type: String,
