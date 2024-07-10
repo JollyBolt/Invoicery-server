@@ -6,13 +6,16 @@ dotenv.config()
 const getAllInvoices = async (req, res) => {
   try {
     const userId = req.id
-    const search = req.query.search
-    const page = req.query.page
-    const limit = req.query.limit
+    const search = req.query.search || ""
+    const page = parseInt(req.query.page) || 0
+    const limit = parseInt(req.query.limit) || 10
     const pageCount = Math.ceil((await Invoice.find().count()) / limit)
     let invoiceList = await Invoice.find({
       userId: userId,
-      // customer: { name: { $regex: search, $options: "i" } },
+      $or: [
+        { "customer.name": { $regex: search, $options: "i" } },
+        { invoiceNumber: { $regex: search, $options: "i" } },
+      ],
     })
       .skip(page * limit)
       .limit(limit)
