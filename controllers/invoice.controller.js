@@ -9,13 +9,14 @@ const getAllInvoices = async (req, res) => {
     const search = req.query.search
     const page = req.query.page
     const limit = req.query.limit
-    let invoiceList = await Product.find({
+    const pageCount = Math.ceil((await Invoice.find().count()) / limit)
+    let invoiceList = await Invoice.find({
       userId: userId,
-      customer: { name: { $regex: search, $options: "i" } },
+      // customer: { name: { $regex: search, $options: "i" } },
     })
       .skip(page * limit)
       .limit(limit)
-    res.status(200).send(invoiceList)
+    res.status(200).send({ pageCount, invoices: invoiceList })
   } catch (e) {
     console.log({
       msg: "Error occured in getAllInvoices",
