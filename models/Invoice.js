@@ -128,6 +128,7 @@ const InvoiceSchema = new Schema({
         value: {
           type: Number,
           required: false,
+          default: 0
         },
         type: {
           type: String,
