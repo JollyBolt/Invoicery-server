@@ -54,10 +54,10 @@ const createInvoice = async (req, res) => {
     await invoice.save()
 
     //Editing Stats associated to user
-    const total=req.body.totalAmount
+    const total = req.body.totalAmount
     const stats = await Stat.findOneAndUpdate(
       { userId },
-      { $inc: { totalRevenue: total,totalInvoices: 1 } },
+      { $inc: { totalRevenue: total, totalInvoices: 1 } },
     )
     res.status(201).send(invoice)
   } catch (e) {
@@ -75,6 +75,14 @@ const createInvoice = async (req, res) => {
 const editInvoice = async (req, res) => {
   try {
     const invoice = await Invoice.findByIdAndUpdate(req.params.id, req.body)
+
+    //Editing Stats associated to user
+    const prevTotal = invoice.totalAmount
+    const afterTotal = req.body.totalAmount
+    const stats = await Stat.findOneAndUpdate(
+      { userId: req.id },
+      { $inc: { totalRevenue: afterTotal - prevTotal } },
+    )
     res.status(200).send(invoice)
   } catch (e) {
     console.log({
@@ -91,6 +99,13 @@ const editInvoice = async (req, res) => {
 const deleteInvoice = async (req, res) => {
   try {
     const invoice = await Invoice.findByIdAndDelete(req.params.id)
+
+    //Editing Stats associated to user
+    const total = invoice.totalAmount
+    const stats = await Stat.findOneAndUpdate(
+      { userId: req.id },
+      { $inc: { totalRevenue: -total, totalInvoices: -1 } },
+    )
     res.status(200).send(invoice)
   } catch (e) {
     console.log({
