@@ -12,7 +12,7 @@ const InvoiceSchema = new Schema({
   },
   invoiceNumber: {
     type: String,
-    required: true,
+    // required: true,
     unique: true,
   },
   purchaseOrder: {
