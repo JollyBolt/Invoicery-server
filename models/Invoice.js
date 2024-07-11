@@ -18,6 +18,9 @@ const InvoiceSchema = new Schema({
   purchaseOrder: {
     type: String,
   },
+  purchaseOrderDate: {
+    type: String,
+  },
   invoiceDate: {
     day: {
       type: String,
@@ -144,6 +147,11 @@ const InvoiceSchema = new Schema({
   totalAmount: {
     type: Number,
     required: true,
+  }, 
+  miscellaneous: {
+    type: Number,
+    required: false,
+    default: 0,
   },
   taxes: {
     igst: {
