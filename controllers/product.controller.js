@@ -9,14 +9,18 @@ const getAllProducts = async (req, res) => {
     const search = req.query.search
     const page = req.query.page
     const limit = req.query.limit
-    const pageCount = Math.ceil((await Product.find().count()) / limit)
+    const pageCount = Math.ceil(
+      (await Product.find({
+        userId: userId,
+        name: { $regex: search, $options: "i" },
+      }).countDocuments()) / limit
+    )
     let productList = await Product.find({
       userId: userId,
       name: { $regex: search, $options: "i" },
     })
       .skip(page * limit)
       .limit(limit)
-
     res.status(200).send({ pageCount,products:productList })
   } catch (e) {
     console.log({

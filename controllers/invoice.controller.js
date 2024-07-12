@@ -9,7 +9,15 @@ const getAllInvoices = async (req, res) => {
     const search = req.query.search || ""
     const page = parseInt(req.query.page) || 0
     const limit = parseInt(req.query.limit) || 10
-    const pageCount = Math.ceil((await Invoice.find().count()) / limit)
+    const pageCount = Math.ceil(
+      (await Invoice.find({
+        userId: userId,
+        $or: [
+          { "customer.name": { $regex: search, $options: "i" } },
+          { invoiceNumber: { $regex: search, $options: "i" } },
+        ],
+      }).countDocuments()) / limit
+    )
     let invoiceList = await Invoice.find({
       userId: userId,
       $or: [

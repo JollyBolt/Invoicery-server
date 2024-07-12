@@ -7,9 +7,14 @@ const getAllCustomers = async (req, res) => {
   try {
     const userId = req.id
     const search = req.query.search
-    const page = req.query.page
-    const limit = req.query.limit
-    const pageCount = Math.ceil((await Customer.find().count()) / limit)
+    const page = parseInt(req.query.page) || 0
+    const limit = parseInt(req.query.limit) || 10
+    const pageCount = Math.ceil(
+      (await Customer.find({
+        userId: userId,
+        client: { $regex: search, $options: "i" },
+      }).countDocuments()) / limit
+    )
     let customerList = await Customer.find({
       userId: userId,
       client: { $regex: search, $options: "i" },
