@@ -21,7 +21,6 @@ const UserAuthSchema = new Schema({
   },
   googleCredentials: {
     type: String,
-    unique: true,
     default: "null",
   },
 })

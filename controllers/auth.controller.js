@@ -1,4 +1,5 @@
 import UserAuth from "../models/UserAuth.js"
+import User from "../models/User.js"
 import { validationResult } from "express-validator"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
@@ -56,11 +57,11 @@ const login = async (req, res) => {
     //if error related to request occurs
     console.log({
       msg: "Error occured in login",
-      error: e.message,
+      error: error.message,
     })
     res.status(500).send({
       msg: "Internal server error occured",
-      error: e.message,
+      error: error.message,
     })
   }
 }
@@ -84,32 +85,38 @@ const signup = async (req, res) => {
     return res.status(400).json({ errors: errors.array()[0].msg })
   }
   try {
-    let user = await UserAuth.findOne({ email: req.body.email }) //checking if user with email already exists
+    const { userBody, userAuthBody } = req.body
 
-    if (user) {
+    const userExists = await UserAuth.findOne({ email: userAuthBody.email }) //checking if user with email already exists
+
+    if (userExists) {
       //handling if user with email already exists
       return res
         .status(400)
-        .json({ error: "Sorry, UserAuth with email already exists" }) //return is used so if this runs,it doesn't reach underlying code
+        .json({ error: "Sorry, user with email already exists" }) //return is used so if this runs,it doesn't reach underlying code
     }
-    //create new user
 
-    const { mode } = req.body
+    //create new user
+    let userAuth
+    const { mode } = userAuthBody
 
     if (mode === "password") {
       const salt = await bcrypt.genSalt(10) //creating salt
-      const secPass = await bcrypt.hash(req.body.password, salt) //creating secure password by combining user entered paas with salt and then hashed
-      user = new UserAuth({ ...req.body, password: secPass, passwordLogin: true }) //create new user from input based on UserAuth model
+      const secPass = await bcrypt.hash(userAuthBody.password, salt) //creating secure password by combining user entered paas with salt and then hashed
+      userAuth = new UserAuth({ ...userAuthBody, password: secPass, passwordLogin: true }) //create new user from input based on UserAuth model
     } else if (mode === "google") {
-      user = new UserAuth({ ...req.body, googleLogin: true }) //create new user from input based on UserAuth model
+      userAuth = new UserAuth({ ...userAuthBody, googleLogin: true }) //create new user from input based on UserAuth model
     } else if (mode === "otp") {
-      user = new UserAuth({ ...req.body }) //create new user from input based on UserAuth model
+      userAuth = new UserAuth({ ...userAuthBody }) //create new user from input based on UserAuth model
     }
+    await userAuth.save()
+
+    const user = new User({ ...userBody, userId: userAuth._id })
     await user.save() //save new user document to collection in DB
     const token = jwt.sign(
       //creating authtoken
       {
-        id: user._id, //setting the of document id of obtained user as payload
+        id: userAuth._id, //setting the of document id of obtained user as payload
       },
       secret,
       { expiresIn: "1d" }
@@ -127,11 +134,12 @@ const signup = async (req, res) => {
     //if error related to request occurs
     console.log({
       msg: "Error occured in signup",
-      error: e.message,
+      errorMessage: error.message,
+      error: error
     })
     res.status(500).send({
       msg: "Internal server error occured",
-      error: e.message,
+      error: error.message,
     })
   }
 }
