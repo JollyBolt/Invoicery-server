@@ -76,7 +76,8 @@ const updateUser = async (req, res) => {
     return res.status(400).json({ errors: errors.array()[0].msg })
   }
   try {
-    const user = await User.findByIdAndUpdate(req.id, req.body) //we use req.id here instead of req.params.id because in case of user both will be same
+    const user = await User.findByIdAndUpdate(req.params.id, req.body) //we use req.id here instead of req.params.id because in case of user both will be same
+    console.log(user)
     res.status(200).send(user)
   } catch (e) {
     console.log({
