@@ -15,7 +15,7 @@ const UserSchema = new Schema({
     required: true,
   },
   org: {
-    name:{
+    name: {
       type: String,
       required: true,
     },
@@ -64,6 +64,10 @@ const UserSchema = new Schema({
     ifsc: {
       type: String,
     },
+  },
+  termsNConditions: {
+    type: [String],
+    default: []
   },
 })
 
