@@ -1,5 +1,9 @@
 import { Router } from "express"
-import { getAllInvoices } from "../controllers/invoice.controller.js"
+import {
+  getAllInvoices,
+  getCustomerDetailData,
+  getDashboardChartData,
+} from "../controllers/invoice.controller.js"
 import { getSingleInvoice } from "../controllers/invoice.controller.js"
 import { createInvoice } from "../controllers/invoice.controller.js"
 import { deleteInvoice } from "../controllers/invoice.controller.js"
@@ -12,6 +16,9 @@ router.get("/getallinvoices", verifyToken, getAllInvoices)
 
 //Fetch single invoice
 router.get("/getinvoice/:id", verifyToken, getSingleInvoice)
+
+router.get("/getcustomerdetaildata", verifyToken, getCustomerDetailData)
+router.get("/getdashboardchartdata", verifyToken, getDashboardChartData)
 
 //Add Invoice
 router.route("/createinvoice").post(
