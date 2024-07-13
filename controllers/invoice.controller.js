@@ -1,3 +1,4 @@
+import mongoose from "mongoose"
 import Invoice from "../models/Invoice.js"
 import Stat from "../models/Stat.js"
 import dotenv from "dotenv"
@@ -68,7 +69,7 @@ const createInvoice = async (req, res) => {
     const total = req.body.totalAmount
     const stats = await Stat.findOneAndUpdate(
       { userId },
-      { $inc: { totalRevenue: total, totalInvoices: 1 } },
+      { $inc: { totalRevenue: total, totalInvoices: 1 } }
     )
     res.status(201).send(invoice)
   } catch (e) {
@@ -92,7 +93,7 @@ const editInvoice = async (req, res) => {
     const afterTotal = req.body.totalAmount
     const stats = await Stat.findOneAndUpdate(
       { userId: req.id },
-      { $inc: { totalRevenue: afterTotal - prevTotal } },
+      { $inc: { totalRevenue: afterTotal - prevTotal } }
     )
     res.status(200).send(invoice)
   } catch (e) {
@@ -115,7 +116,7 @@ const deleteInvoice = async (req, res) => {
     const total = invoice.totalAmount
     const stats = await Stat.findOneAndUpdate(
       { userId: req.id },
-      { $inc: { totalRevenue: -total, totalInvoices: -1 } },
+      { $inc: { totalRevenue: -total, totalInvoices: -1 } }
     )
     res.status(200).send(invoice)
   } catch (e) {
@@ -129,4 +130,146 @@ const deleteInvoice = async (req, res) => {
     })
   }
 }
-export { getAllInvoices, createInvoice, editInvoice, deleteInvoice, getSingleInvoice }
+
+const getCustomerDetailData = async (req, res) => {
+  try {
+    const userId = req.id
+    const year = req.query.year || new Date().getFullYear().toString()
+    const month = parseInt(req.query.month) || new Date().getMonth()
+    const customer = req.query.customer || null
+    const revenueTillDate = await Invoice.aggregate([
+      {
+        $match: {
+          userId: new mongoose.Types.ObjectId(userId),
+          "customer.name": customer,
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          revenue: {
+            $sum: "$totalAmount",
+          },
+        },
+      },
+    ])
+    const revenueThisYear = await Invoice.aggregate([
+      {
+        $match: {
+          userId: new mongoose.Types.ObjectId(userId),
+          "customer.name": customer,
+          "invoiceDate.year": year,
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          revenue: {
+            $sum: "$totalAmount",
+          },
+        },
+      },
+    ])
+    const revenueThisMonth = await Invoice.aggregate([
+      {
+        $match: {
+          userId: new mongoose.Types.ObjectId(userId),
+          "customer.name": customer,
+          "invoiceDate.year": year,
+          "invoiceDate.month": month,
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          revenue: {
+            $sum: "$totalAmount",
+          },
+        },
+      },
+    ])
+
+    const revenueForChart = await Invoice.aggregate([
+      {
+        $match: {
+          userId: new mongoose.Types.ObjectId(userId),
+          "invoiceDate.year": year,
+          "customer.name": customer,
+        },
+      },
+      {
+        $group: {
+          _id: "$invoiceDate.month",
+          revenue: {
+            $sum: "$totalAmount",
+          },
+        },
+      },
+    ])
+    res.status(200).send({
+      revenueForChart: revenueForChart,
+      revenueTillDate:
+        revenueTillDate.length > 0 ? revenueTillDate[0].revenue : 0,
+      revenueThisYear:
+        revenueThisYear.length > 0 ? revenueThisYear[0].revenue : 0,
+      revenueThisMonth:
+        revenueThisMonth.length > 0 ? revenueThisMonth[0].revenue : 0,
+    })
+  } catch (e) {
+    console.log({
+      msg: "Error occured in getYearlyRevenue",
+      error: e.message,
+    })
+    res.status(500).send({
+      msg: "Internal server error occured",
+      error: e.message,
+    })
+  }
+}
+
+const getDashboardChartData = async (req, res) => {
+  try {
+    const userId = req.id
+    const year = req.query.year || new Date().getFullYear().toString()
+    const month = parseInt(req.query.month) || new Date().getMonth()
+    const revenueForYearlyChart = await Invoice.aggregate([
+      {
+        $match: {
+          userId: new mongoose.Types.ObjectId(userId),
+          "invoiceDate.year": year,
+        },
+      },
+      {
+        $group: {
+          _id: "$invoiceDate.month",
+          revenue: {
+            $sum: "$totalAmount",
+          },
+        },
+      },
+    ])
+
+    res.status(200).send({
+      revenueForYearlyChart: revenueForYearlyChart,
+    })
+  } catch (e) {
+    console.log({
+      msg: "Error occured in getYearlyRevenue",
+      error: e.message,
+    })
+    res.status(500).send({
+      msg: "Internal server error occured",
+      error: e.message,
+    })
+  }
+}
+
+export {
+  getAllInvoices,
+  createInvoice,
+  editInvoice,
+  deleteInvoice,
+  getSingleInvoice,
+  getCustomerDetailData,
+  getDashboardChartData,
+}
