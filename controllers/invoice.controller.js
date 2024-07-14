@@ -232,6 +232,24 @@ const getDashboardChartData = async (req, res) => {
     const userId = req.id
     const year = req.query.year || new Date().getFullYear().toString()
     const month = parseInt(req.query.month) || new Date().getMonth()
+    const revenueForMonthlyChart = await Invoice.aggregate([
+      {
+        $match: {
+          userId: new mongoose.Types.ObjectId(userId),
+          "invoiceDate.year": year,
+          "invoiceDate.month": month,
+        },
+      },
+      {
+        $group: {
+          _id: "$customer.name",
+          invoices: {
+            $sum: 1,
+          },
+        },
+      },
+    ])
+
     const revenueForYearlyChart = await Invoice.aggregate([
       {
         $match: {
@@ -251,6 +269,7 @@ const getDashboardChartData = async (req, res) => {
 
     res.status(200).send({
       revenueForYearlyChart: revenueForYearlyChart,
+      revenueForMonthlyChart: revenueForMonthlyChart,
     })
   } catch (e) {
     console.log({
