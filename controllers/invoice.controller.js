@@ -26,6 +26,7 @@ const getAllInvoices = async (req, res) => {
         { invoiceNumber: { $regex: search, $options: "i" } },
       ],
     })
+      .sort({ invoiceNumber: -1 })
       .skip(page * limit)
       .limit(limit)
     res.status(200).send({ pageCount, invoices: invoiceList })
