@@ -1,12 +1,13 @@
 import { Router } from "express"
 import {
+  editInvoice,
   getAllInvoices,
+  getSingleInvoice, 
+  createInvoice, 
+  deleteInvoice,
   getCustomerDetailData,
   getDashboardChartData,
 } from "../controllers/invoice.controller.js"
-import { getSingleInvoice } from "../controllers/invoice.controller.js"
-import { createInvoice } from "../controllers/invoice.controller.js"
-import { deleteInvoice } from "../controllers/invoice.controller.js"
 import { verifyToken } from "../middleware/verifyToken.js"
 
 const router = Router()
@@ -27,10 +28,10 @@ router.route("/createinvoice").post(
   createInvoice
 )
 
-//edit customer
-// router.put("/editcustomer/:id", verifyToken, editCustomer);
+// Edit Invoice
+router.put("/editinvoice/:id", verifyToken, editInvoice);
 
-//delete invoice
+//Delete invoice
 router.delete("/deleteinvoice/:id", verifyToken, deleteInvoice)
 
 export default router
