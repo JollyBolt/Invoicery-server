@@ -206,6 +206,13 @@ const getCustomerDetailData = async (req, res) => {
           },
         },
       },
+      {
+        $project: {
+          _id: 0,
+          month: "$_id",
+          revenue: 1,
+        },
+      },
     ])
     res.status(200).send({
       revenueForChart: revenueForChart,
@@ -233,7 +240,7 @@ const getDashboardChartData = async (req, res) => {
     const userId = req.id
     const year = req.query.year || new Date().getFullYear().toString()
     const month = parseInt(req.query.month) || new Date().getMonth()
-    const revenueForMonthlyChart = await Invoice.aggregate([
+    const monthlyChartData = await Invoice.aggregate([
       {
         $match: {
           userId: new mongoose.Types.ObjectId(userId),
@@ -244,9 +251,48 @@ const getDashboardChartData = async (req, res) => {
       {
         $group: {
           _id: "$customer.name",
-          invoices: {
+          invoiceCount: {
             $sum: 1,
           },
+          revenue: {
+            $sum: "$totalAmount",
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          customer: "$_id",
+          invoiceCount: 1,
+          revenue: 1,
+        },
+      },
+    ])
+
+    const monthlyStats = await Invoice.aggregate([
+      {
+        $match: {
+          userId: new mongoose.Types.ObjectId(userId),
+          "invoiceDate.year": year,
+          "invoiceDate.month": month,
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          invoiceCount: { $sum: 1 },
+          highestInvoiceValue: { $max: "$totalAmount" },
+          lowestInvoiceValue: { $min: "$totalAmount" },
+          totalRevenue: { $sum: "$totalAmount" },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          invoiceCount: 1,
+          highestInvoiceValue: 1,
+          lowestInvoiceValue: 1,
+          totalRevenue: 1,
         },
       },
     ])
@@ -259,18 +305,55 @@ const getDashboardChartData = async (req, res) => {
         },
       },
       {
-        $group: {
-          _id: "$invoiceDate.month",
-          revenue: {
-            $sum: "$totalAmount",
-          },
+        $facet: {
+          overallStats: [
+            {
+              $group: {
+                _id: null,
+                invoiceCount: { $sum: 1 },
+                highestInvoiceValue: { $max: "$totalAmount" },
+                lowestInvoiceValue: { $min: "$totalAmount" },
+                totalRevenue: { $sum: "$totalAmount" },
+              },
+            },
+            {
+              $project: {
+                _id: 0,
+                invoiceCount: 1,
+                highestInvoiceValue: 1,
+                lowestInvoiceValue: 1,
+                totalRevenue: 1,
+              },
+            },
+          ],
+          monthlyRevenue: [
+            {
+              $group: {
+                _id: "$invoiceDate.month",
+                revenue: { $sum: "$totalAmount" },
+              },
+            },
+            {
+              $project: {
+                _id: 0,
+                month: "$_id",
+                revenue: 1,
+              },
+            },
+            {
+              $sort: {
+                month: 1, // Sorting by month in ascending order
+              },
+            },
+          ],
         },
       },
     ])
 
     res.status(200).send({
-      revenueForYearlyChart: revenueForYearlyChart,
-      revenueForMonthlyChart: revenueForMonthlyChart,
+      revenueForYearlyChart: revenueForYearlyChart[0],
+      monthlyStats: monthlyStats,
+      monthlyChartData: monthlyChartData,
     })
   } catch (e) {
     console.log({
