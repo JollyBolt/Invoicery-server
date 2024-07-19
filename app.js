@@ -21,6 +21,7 @@ app.use(
       // "http://localhost:5173",
       // "http://localhost:5174",
       "https://invoicery.ishansen.in/",
+      "https://www.invoicery.ishansen.in/",
     ],
   })
 )
