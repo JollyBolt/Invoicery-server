@@ -50,7 +50,7 @@ const login = async (req, res) => {
       expires: expiresIn,
       httpOnly: false,
       sameSite: "none",
-      secure: true,
+      secure: false,
     }) //send the token as cookie to frontend (cookie exipires 2 days later)
     res.status(200).json({ token }) //jwt auth token is returned as json
   } catch (error) {
