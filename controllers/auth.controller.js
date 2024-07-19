@@ -45,7 +45,7 @@ const login = async (req, res) => {
       { expiresIn: "7d" }
     )
     const expiresIn = new Date()
-    expiresIn.setDate(new Date().getDate() + 1) //set expire date to 1 day later
+    expiresIn.setDate(new Date().getDate() + 7) //set expire date to 7 day later
     res.cookie("authToken", token, {
       expires: expiresIn,
       httpOnly: false,
