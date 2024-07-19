@@ -42,7 +42,7 @@ const login = async (req, res) => {
         id: user._id, //setting the of document id of obtained user as payload
       },
       secret,
-      { expiresIn: "1d" }
+      { expiresIn: "7d" }
     )
     const expiresIn = new Date()
     expiresIn.setDate(new Date().getDate() + 1) //set expire date to 1 day later
@@ -122,7 +122,7 @@ const signup = async (req, res) => {
       { expiresIn: "1d" }
     )
     const expiresIn = new Date()
-    expiresIn.setDate(new Date().getDate() + 7) //set expire date to 1 day later
+    expiresIn.setDate(new Date().getDate() + 7) //set expire date to 7 day later
     res.cookie("authToken", token, {
       expires: expiresIn,
       httpOnly: false,
