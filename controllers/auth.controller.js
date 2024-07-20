@@ -4,6 +4,7 @@ import { validationResult } from "express-validator"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
+import Stat from "../models/Stat.js"
 dotenv.config()
 
 const secret = process.env.JWT_SECRET
@@ -114,6 +115,8 @@ const signup = async (req, res) => {
 
     const user = new User({ ...userBody, userId: userAuth._id })
     await user.save() //save new user document to collection in DB
+    const stat = new Stat({ userId: userAuth._id }) //Create empty stat document
+    await stat.save()
     const token = jwt.sign(
       //creating authtoken
       {

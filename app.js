@@ -20,6 +20,7 @@ app.use(
     origin: "https://invoicery.ishansen.in"
   })
 )
+
 // origin:"http://localhost:5173"
 app.use(express.json())
 
