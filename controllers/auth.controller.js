@@ -68,17 +68,17 @@ const login = async (req, res) => {
   }
 }
 
-const test = async (req, res) => {
-  const expiresIn = new Date()
-  expiresIn.setDate(new Date().getDate() + 7) //set expire date to 7 day later
-  res.cookie("authToken", "token", {
-    expires: expiresIn,
-    httpOnly: true,
-    sameSite: "None",
-    secure: true,
-  }) //send the token as cookie to frontend (cookie exipires 2 days later)
-  res.status(200).send("cookie set") //jwt auth token is returned as json
-}
+// const test = async (req, res) => {
+//   const expiresIn = new Date()
+//   expiresIn.setDate(new Date().getDate() + 7) //set expire date to 7 day later
+//   res.cookie("authToken", "token", {
+//     expires: expiresIn,
+//     httpOnly: true,
+//     sameSite: "None",
+//     secure: true,
+//   }) //send the token as cookie to frontend (cookie exipires 2 days later)
+//   res.status(200).send("cookie set") //jwt auth token is returned as json
+// }
 
 const signup = async (req, res) => {
   const errors = validationResult(req)
@@ -127,7 +127,7 @@ const signup = async (req, res) => {
     expiresIn.setDate(new Date().getDate() + 7) //set expire date to 7 day later
     res.cookie("authToken", token, {
       expires: expiresIn,
-      httpOnly: true,
+      httpOnly: false,
       sameSite: "None",
       secure: true,
     }) //send the token as cookie to frontend (cookie exipires 2 days later)
