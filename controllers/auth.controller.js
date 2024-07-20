@@ -132,6 +132,7 @@ const signup = async (req, res) => {
       httpOnly: false,
       sameSite: "None",
       secure: true,
+      domain:"invoicery.ishansen.in"
     }) //send the token as cookie to frontend (cookie exipires 2 days later)
     res.status(201).json({ token, user })
   } catch (error) {
