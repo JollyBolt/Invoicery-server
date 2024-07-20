@@ -51,7 +51,7 @@ const login = async (req, res) => {
       httpOnly: true,
       sameSite: "None",
       secure: true,
-    }) //send the token as cookie to frontend (cookie exipires 2 days later)
+    }) //send the token as cookie to frontend (cookie exipires 7 days later)
     res.status(200).json({ token }) //jwt auth token is returned as json
   } catch (error) {
     //if error related to request occurs
@@ -68,7 +68,7 @@ const login = async (req, res) => {
 
 const test = async (req, res) => {
   const expiresIn = new Date()
-  expiresIn.setDate(new Date().getDate() + 1) //set expire date to 1 day later
+  expiresIn.setDate(new Date().getDate() + 7) //set expire date to 7 day later
   res.cookie("authToken", "token", {
     expires: expiresIn,
     httpOnly: true,
@@ -119,7 +119,7 @@ const signup = async (req, res) => {
         id: userAuth._id, //setting the of document id of obtained user as payload
       },
       secret,
-      { expiresIn: "1d" }
+      { expiresIn: "7d" }
     )
     const expiresIn = new Date()
     expiresIn.setDate(new Date().getDate() + 7) //set expire date to 7 day later
