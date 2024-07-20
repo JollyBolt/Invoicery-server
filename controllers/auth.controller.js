@@ -51,7 +51,7 @@ const login = async (req, res) => {
       httpOnly: false,
       sameSite: "None",
       secure: true,
-      domain:"https://invoicery.ishansen.in"
+      domain:"invoicery.ishansen.in"
 
     }) //send the token as cookie to frontend (cookie exipires 7 days later)
     res.status(200).json({ token }) //jwt auth token is returned as json
@@ -146,4 +146,4 @@ const signup = async (req, res) => {
   }
 }
 
-export { login, signup, test }
+export { login, signup }
