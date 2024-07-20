@@ -48,9 +48,11 @@ const login = async (req, res) => {
     expiresIn.setDate(new Date().getDate() + 7) //set expire date to 7 day later
     res.cookie("authToken", token, {
       expires: expiresIn,
-      httpOnly: true,
+      httpOnly: false,
       sameSite: "None",
       secure: true,
+      domain:"https://invoicery.ishansen.in"
+
     }) //send the token as cookie to frontend (cookie exipires 7 days later)
     res.status(200).json({ token }) //jwt auth token is returned as json
   } catch (error) {
