@@ -21,7 +21,7 @@ app.use(
   })
 )
 
-// origin:"http://localhost:5173"
+origin:"http://localhost:5173"
 app.use(express.json())
 
 app.use("/api/v1/auth", authRouter)
