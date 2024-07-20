@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { login, signup, test } from "../controllers/auth.controller.js"
+import { login, signup } from "../controllers/auth.controller.js"
 import { body } from "express-validator"
 import { verifyToken } from "../middleware/verifyToken.js"
 
@@ -23,6 +23,6 @@ router.route("/signup").post(
   signup
 )
 
-router.route("/test").get(test)
+// router.route("/test").get(test)
 
 export default router
