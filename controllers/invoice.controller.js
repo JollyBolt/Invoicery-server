@@ -349,7 +349,67 @@ const getDashboardChartData = async (req, res) => {
         },
       },
     ])
-
+    // console.log(revenueForYearlyChart[0].monthlyRevenue)
+    let monthlyRevenue = [
+      {
+        month: "Jan",
+        revenue: 0,
+      },
+      {
+        month: "Feb",
+        revenue: 0,
+      },
+      {
+        month: "Mar",
+        revenue: 0,
+      },
+      {
+        month: "Apr",
+        revenue: 0,
+      },
+      {
+        month: "May",
+        revenue: 0,
+      },
+      {
+        month: "Jun",
+        revenue: 0,
+      },
+      {
+        month: "Jul",
+        revenue: 0,
+      },
+      {
+        month: "Aug",
+        revenue: 0,
+      },
+      {
+        month: "Sep",
+        revenue: 0,
+      },
+      {
+        month: "Oct",
+        revenue: 0,
+      },
+      {
+        month: "Nov",
+        revenue: 0,
+      },
+      {
+        month: "Dec",
+        revenue: 0,
+      },
+    ]
+    if (revenueForYearlyChart[0].monthlyRevenue.length > 0) {
+      let i
+      for (i = 0; i < revenueForYearlyChart[0].monthlyRevenue.length; i++) {
+        monthlyRevenue[
+          revenueForYearlyChart[0]?.monthlyRevenue[i]?.month
+        ].revenue = revenueForYearlyChart[0].monthlyRevenue[i].revenue
+      }
+    }
+    revenueForYearlyChart[0].monthlyRevenue = monthlyRevenue
+    // console.log(revenueForYearlyChart[0].monthlyRevenue)
     res.status(200).send({
       revenueForYearlyChart: revenueForYearlyChart[0],
       monthlyStats: monthlyStats,
