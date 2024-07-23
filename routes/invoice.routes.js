@@ -2,11 +2,12 @@ import { Router } from "express"
 import {
   editInvoice,
   getAllInvoices,
-  getSingleInvoice, 
-  createInvoice, 
+  getSingleInvoice,
+  createInvoice,
   deleteInvoice,
   getCustomerDetailData,
-  getDashboardChartData,
+  getDashboardYearlyChartData,
+  getDashboardMonthlyChartData,
 } from "../controllers/invoice.controller.js"
 import { verifyToken } from "../middleware/verifyToken.js"
 
@@ -19,7 +20,16 @@ router.get("/getallinvoices", verifyToken, getAllInvoices)
 router.get("/getinvoice/:id", verifyToken, getSingleInvoice)
 
 router.get("/getcustomerdetaildata", verifyToken, getCustomerDetailData)
-router.get("/getdashboardchartdata", verifyToken, getDashboardChartData)
+router.get(
+  "/getdashboardyearlychartdata",
+  verifyToken,
+  getDashboardYearlyChartData
+)
+router.get(
+  "/getdashboardmonthlychartdata",
+  verifyToken,
+  getDashboardMonthlyChartData
+)
 
 //Add Invoice
 router.route("/createinvoice").post(
