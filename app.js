@@ -17,11 +17,10 @@ app.use(cookieParser())
 app.use(
   cors({
     credentials: true,
-    origin: "https://invoicery.ishansen.in"
+    origin: process.env.ORIGIN,
   })
 )
 
-origin:"http://localhost:5173"
 app.use(express.json())
 
 app.use("/api/v1/auth", authRouter)
