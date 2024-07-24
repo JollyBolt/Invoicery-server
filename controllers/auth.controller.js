@@ -52,7 +52,7 @@ const login = async (req, res) => {
       httpOnly: false,
       sameSite: "None",
       secure: true,
-      domain: process.env.NODE_ENV == "production" ? "ishansen.in" : "",
+      domain: process.env.NODE_ENV == "production" ? "ishansen.in" : null,
     }) //send the token as cookie to frontend (cookie exipires 7 days later)
     res.status(200).json({ token }) //jwt auth token is returned as json
   } catch (error) {
@@ -124,7 +124,7 @@ const signup = async (req, res) => {
       httpOnly: false,
       sameSite: "None",
       secure: true,
-      domain: process.env.NODE_ENV == "production" ? "ishansen.in" : "",
+      domain: process.env.NODE_ENV == "production" ? "ishansen.in" : null,
     }) //send the token as cookie to frontend (cookie exipires 2 days later)
     res.status(201).json({ token, user })
   } catch (error) {
