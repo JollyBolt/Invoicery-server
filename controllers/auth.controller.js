@@ -52,7 +52,7 @@ const login = async (req, res) => {
       httpOnly: false,
       sameSite: "None",
       secure: true,
-      domain: process.env.NODE_ENV !== "production" ? "ishansen.in" : "",
+      domain: process.env.NODE_ENV == "production" ? "ishansen.in" : "",
     }) //send the token as cookie to frontend (cookie exipires 7 days later)
     res.status(200).json({ token }) //jwt auth token is returned as json
   } catch (error) {
@@ -93,7 +93,11 @@ const signup = async (req, res) => {
     if (mode === "password") {
       const salt = await bcrypt.genSalt(10) //creating salt
       const secPass = await bcrypt.hash(userAuthBody.password, salt) //creating secure password by combining user entered paas with salt and then hashed
-      userAuth = new UserAuth({ ...userAuthBody, password: secPass, passwordLogin: true }) //create new user from input based on UserAuth model
+      userAuth = new UserAuth({
+        ...userAuthBody,
+        password: secPass,
+        passwordLogin: true,
+      }) //create new user from input based on UserAuth model
     } else if (mode === "google") {
       userAuth = new UserAuth({ ...userAuthBody, googleLogin: true }) //create new user from input based on UserAuth model
     } else if (mode === "otp") {
@@ -120,7 +124,7 @@ const signup = async (req, res) => {
       httpOnly: false,
       sameSite: "None",
       secure: true,
-      domain: process.env.NODE_ENV !== "production" ? "ishansen.in" : "",
+      domain: process.env.NODE_ENV == "production" ? "ishansen.in" : "",
     }) //send the token as cookie to frontend (cookie exipires 2 days later)
     res.status(201).json({ token, user })
   } catch (error) {
@@ -128,7 +132,7 @@ const signup = async (req, res) => {
     console.log({
       msg: "Error occured in signup",
       errorMessage: error.message,
-      error: error
+      error: error,
     })
     res.status(500).send({
       msg: "Internal server error occured",
