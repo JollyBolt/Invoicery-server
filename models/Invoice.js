@@ -13,7 +13,6 @@ const InvoiceSchema = new Schema({
   invoiceNumber: {
     type: String,
     // required: true,
-    unique: true,
   },
   purchaseOrder: {
     type: String,
@@ -127,7 +126,7 @@ const InvoiceSchema = new Schema({
         value: {
           type: Number,
           required: false,
-          default: 0
+          default: 0,
         },
         type: {
           type: String,
@@ -147,7 +146,7 @@ const InvoiceSchema = new Schema({
   totalAmount: {
     type: Number,
     required: true,
-  }, 
+  },
   miscellaneous: {
     type: Number,
     required: false,
