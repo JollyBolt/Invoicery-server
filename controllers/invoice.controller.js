@@ -274,7 +274,6 @@ const getCustomerDetailData = async (req, res) => {
       }
     }
     revenueForChart = monthlyRevenue
-    console.log(revenueForChart)
 
     res.status(200).send({
       revenueForChart: revenueForChart,
