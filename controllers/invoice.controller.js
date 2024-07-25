@@ -434,7 +434,7 @@ const getDashboardMonthlyChartData = async (req, res) => {
   try {
     const userId = req.id
     const year = req.query.year || new Date().getFullYear().toString()
-    const month = parseInt(req.query.month) || new Date().getMonth() + 1
+    const month = parseInt(req.query.month)
 
     const monthlyChartData = await Invoice.aggregate([
       {
