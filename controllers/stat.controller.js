@@ -6,7 +6,7 @@ const getStats = async (req, res) => {
   try {
     const userId = req.id
     const stats = await Stat.findOne({ userId })
-    res.status(200).json({ stats })
+    res.status(200).json({data: stats ,token:req.headers.authorization.split(" ")[1]})
   } catch (e) {
     console.log({
       msg: "Error occured in getStats",

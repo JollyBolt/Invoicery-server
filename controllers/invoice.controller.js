@@ -29,7 +29,7 @@ const getAllInvoices = async (req, res) => {
       .sort({ invoiceNumber: -1 })
       .skip(page * limit)
       .limit(limit)
-    res.status(200).send({ pageCount, invoices: invoiceList })
+    res.status(200).send({ data: { pageCount, invoices: invoiceList }, token: req.headers.authorization.split(" ")[1] })
   } catch (e) {
     console.log({
       msg: "Error occured in getAllInvoices",
@@ -45,7 +45,7 @@ const getAllInvoices = async (req, res) => {
 const getSingleInvoice = async (req, res) => {
   try {
     const invoice = await Invoice.findById(req.params.id)
-    res.status(200).send(invoice)
+    res.status(200).send({ data: invoice, token: req.headers.authorization.split(" ")[1] })
   } catch (e) {
     console.log({
       msg: "Error occured in getSingleInvoice",
@@ -72,7 +72,7 @@ const createInvoice = async (req, res) => {
       { userId },
       { $inc: { totalRevenue: total, totalInvoices: 1 } }
     )
-    res.status(201).send(invoice)
+    res.status(201).send({ data: invoice, token: req.headers.authorization.split(" ")[1] })
   } catch (e) {
     console.log({
       msg: "Error occured in createInvoice",
@@ -96,7 +96,7 @@ const editInvoice = async (req, res) => {
       { userId: req.id },
       { $inc: { totalRevenue: afterTotal - prevTotal } }
     )
-    res.status(200).send(invoice)
+    res.status(200).send({ data: invoice, token: req.headers.authorization.split(" ")[1] })
   } catch (e) {
     console.log({
       msg: "Error occured in editInvoice",
@@ -119,7 +119,7 @@ const deleteInvoice = async (req, res) => {
       { userId: req.id },
       { $inc: { totalRevenue: -total, totalInvoices: -1 } }
     )
-    res.status(200).send(invoice)
+    res.status(200).send({ data: invoice, token: req.headers.authorization.split(" ")[1] })
   } catch (e) {
     console.log({
       msg: "Error occured in deleteInvoice",
@@ -276,13 +276,15 @@ const getCustomerDetailData = async (req, res) => {
     revenueForChart = monthlyRevenue
 
     res.status(200).send({
-      revenueForChart: revenueForChart,
-      revenueTillDate:
-        revenueTillDate.length > 0 ? revenueTillDate[0].revenue : 0,
-      revenueThisYear:
-        revenueThisYear.length > 0 ? revenueThisYear[0].revenue : 0,
-      revenueThisMonth:
-        revenueThisMonth.length > 0 ? revenueThisMonth[0].revenue : 0,
+      data: {
+        revenueForChart: revenueForChart,
+        revenueTillDate:
+          revenueTillDate.length > 0 ? revenueTillDate[0].revenue : 0,
+        revenueThisYear:
+          revenueThisYear.length > 0 ? revenueThisYear[0].revenue : 0,
+        revenueThisMonth:
+          revenueThisMonth.length > 0 ? revenueThisMonth[0].revenue : 0,
+      }, token: req.headers.authorization.split(" ")[1]
     })
   } catch (e) {
     console.log({
@@ -415,7 +417,9 @@ const getDashboardYearlyChartData = async (req, res) => {
     revenueForYearlyChart[0].monthlyRevenue = monthlyRevenue
 
     res.status(200).send({
-      revenueForYearlyChart: revenueForYearlyChart[0],
+      data: {
+        revenueForYearlyChart: revenueForYearlyChart[0],
+      }, token: req.headers.authorization.split(" ")[1]
     })
   } catch (e) {
     console.log({
@@ -493,8 +497,10 @@ const getDashboardMonthlyChartData = async (req, res) => {
     ])
 
     res.status(200).send({
-      monthlyStats: monthlyStats,
-      monthlyChartData: monthlyChartData,
+      data: {
+        monthlyStats: monthlyStats,
+        monthlyChartData: monthlyChartData,
+      }, token: req.headers.authorization.split(" ")[1]
     })
   } catch (e) {
     console.log({

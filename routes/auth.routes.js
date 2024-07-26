@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { login, signup } from "../controllers/auth.controller.js"
+import { login, signup,logout} from "../controllers/auth.controller.js"
 import { body } from "express-validator"
 import { verifyToken } from "../middleware/verifyToken.js"
 
@@ -23,6 +23,11 @@ router.route("/signup").post(
   signup
 )
 
-// router.route("/test").get(test)
+router.route("/logout").post(logout)
+
+router.route("/checktoken").post(verifyToken,(req,res)=>{
+  console.log("token verified")
+  res.status(200).send({token:req.headers.authorization.split(" ")[1]});
+})
 
 export default router

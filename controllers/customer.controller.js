@@ -21,8 +21,7 @@ const getAllCustomers = async (req, res) => {
     })
       .skip(page * limit)
       .limit(limit)
-
-    res.status(200).send({ pageCount, customers: customerList })
+    res.status(200).send({ data: { pageCount, customers: customerList }, token: req.headers.authorization.split(" ")[1] })
   } catch (e) {
     console.log({
       msg: "Error occured in getAllCustomers",
@@ -38,7 +37,7 @@ const getAllCustomers = async (req, res) => {
 const getCustomer = async (req, res) => {
   try {
     const customer = await Customer.find({ _id: req.query.id })
-    res.status(200).send({ pageCount: 1, customers: customer })
+    res.status(200).send({ data: { pageCount: 1, customers: customer }, token: req.headers.authorization.split(" ")[1] })
   } catch (e) {
     console.log({
       msg: "Error occured in getCustomer",
@@ -65,7 +64,7 @@ const createCustomer = async (req, res) => {
       { $inc: { totalCustomers: 1 } },
     )
 
-    res.status(201).json(customer)
+    res.status(201).json({ data: { customer }, token: req.headers.authorization.split(" ")[1] })
   } catch (e) {
     console.log({
       msg: "Error occured in createCustomers",
@@ -82,7 +81,7 @@ const editCustomer = async (req, res) => {
   try {
     const userId = req.id
     const customer = await Customer.findByIdAndUpdate(req.params.id, { ...req.body, userId })
-    res.status(200).send(customer)
+    res.status(200).send({ data: customer, token: req.headers.authorization.split(" ")[1] })
   } catch (e) {
     console.log({
       msg: "Error occured in editCustomers",
@@ -101,10 +100,10 @@ const deleteCustomer = async (req, res) => {
 
     //Editing Stats associated to user
     const stats = await Stat.findOneAndUpdate(
-      { userId:req.id },
+      { userId: req.id },
       { $inc: { totalCustomers: -1 } },
     )
-    res.status(200).send(customer)
+    res.status(200).send({ data: customer, token: req.headers.authorization.split(" ")[1] })
   } catch (e) {
     console.log({
       msg: "Error occured in deleteCustomers",

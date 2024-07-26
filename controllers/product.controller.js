@@ -21,7 +21,7 @@ const getAllProducts = async (req, res) => {
     })
       .skip(page * limit)
       .limit(limit)
-    res.status(200).send({ pageCount,products:productList })
+    res.status(200).send({data:{ pageCount,products:productList },token:req.headers.authorization.split(" ")[1]})
   } catch (e) {
     console.log({
       msg: "Error occured in getAllProducts",
@@ -37,7 +37,7 @@ const getAllProducts = async (req, res) => {
 const getProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id)
-    res.status(200).send(product)
+    res.status(200).send({data:product,token:req.headers.authorization.split(" ")[1]})
   } catch (e) {
     console.log({
       msg: "Error occured in getProduct",
@@ -64,7 +64,7 @@ const createProduct = async (req, res) => {
       { $inc: { totalProducts: 1 } },
     )
 
-    res.status(201).json(product)
+    res.status(201).send({data:product,token:req.headers.authorization.split(" ")[1]})
   } catch (e) {
     console.log({
       msg: "Error occured in createProduct",
@@ -97,7 +97,7 @@ const editProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id)
-    res.status(200).send(product)
+    res.status(200).send({data:product,token:req.headers.authorization.split(" ")[1]})
 
     //Editing Stats associated to user
     const stats = await Stat.findOneAndUpdate(

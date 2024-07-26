@@ -5,6 +5,8 @@ import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
 import Stat from "../models/Stat.js"
+import { generateRefreshToken } from "../middleware/generateRefreshToken.js"
+import { generateAccessToken } from "../middleware/generateAccessToken.js"
 dotenv.config()
 
 const secret = process.env.JWT_SECRET
@@ -36,25 +38,10 @@ const login = async (req, res) => {
       if (user.googleCredentials !== googleCredentials)
         return res.status(401).send("Wrong Credentials.")
     }
-
     //if both email and password are correct and user is successfully retrieved
-    const token = jwt.sign(
-      {
-        id: user._id, //setting the of document id of obtained user as payload
-      },
-      secret,
-      { expiresIn: "7d" }
-    )
-    const expiresIn = new Date()
-    expiresIn.setDate(new Date().getDate() + 7) //set expire date to 7 day later
-    res.cookie("authToken", token, {
-      expires: expiresIn,
-      httpOnly: false,
-      sameSite: "None",
-      secure: true,
-      domain: process.env.NODE_ENV == "production" ? "ishansen.in" : null,
-    }) //send the token as cookie to frontend (cookie exipires 7 days later)
-    res.status(200).json({ token }) //jwt auth token is returned as json
+    generateRefreshToken(res, user._id)
+    const token = generateAccessToken( user._id)
+    res.status(200).json(token) //jwt auth token is returned as json
   } catch (error) {
     //if error related to request occurs
     console.log({
@@ -109,24 +96,10 @@ const signup = async (req, res) => {
     await user.save() //save new user document to collection in DB
     const stat = new Stat({ userId: userAuth._id }) //Create empty stat document
     await stat.save()
-    const token = jwt.sign(
-      //creating authtoken
-      {
-        id: userAuth._id, //setting the of document id of obtained user as payload
-      },
-      secret,
-      { expiresIn: "7d" }
-    )
-    const expiresIn = new Date()
-    expiresIn.setDate(new Date().getDate() + 7) //set expire date to 7 day later
-    res.cookie("authToken", token, {
-      expires: expiresIn,
-      httpOnly: false,
-      sameSite: "None",
-      secure: true,
-      domain: process.env.NODE_ENV == "production" ? "ishansen.in" : null,
-    }) //send the token as cookie to frontend (cookie exipires 2 days later)
-    res.status(201).json({ token, user })
+
+    generateRefreshToken(res, user._id)
+    const token = generateAccessToken(user._id)
+    res.status(201).send({ token, user })
   } catch (error) {
     //if error related to request occurs
     console.log({
@@ -141,4 +114,9 @@ const signup = async (req, res) => {
   }
 }
 
-export { login, signup }
+const logout = (req, res) => {
+  res.clearCookie("refreshToken", { path: "/", domain: process.env.NODE_ENV == "production" ? "ishansen.in" : null })
+  res.status(200).send("Logged Out Successfully")
+}
+
+export { login, signup, logout }

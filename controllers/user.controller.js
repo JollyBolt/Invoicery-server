@@ -34,7 +34,7 @@ const getUser = async (req, res) => {
         },
       },
     ])
-    res.send(user[0])
+    res.send({data:user[0],token:req.headers.authorization.split(" ")[1]})
   } catch (e) {
     console.log({
       msg: "Error occured in getUser",
@@ -47,27 +47,27 @@ const getUser = async (req, res) => {
   }
 }
 
-const createUser = async (req, res) => {
-  try {
-    const userId = req.id
-    const user = new User(req.body)
-    user.userId = userId
-    await user.save()
-    const stats = new Stat()
-    stats.userId = userId
-    await stats.save()
-    res.status(201).json(user)
-  } catch (error) {
-    console.log({
-      msg: "Error occured in createUser",
-      error: e.message,
-    })
-    res.status(500).send({
-      msg: "Internal server error occured",
-      error: e.message,
-    })
-  }
-}
+// const createUser = async (req, res) => {
+//   try {
+//     const userId = req.id
+//     const user = new User(req.body)
+//     user.userId = userId
+//     await user.save()
+//     const stats = new Stat()
+//     stats.userId = userId
+//     await stats.save()
+//     res.status(201).json(user)
+//   } catch (error) {
+//     console.log({
+//       msg: "Error occured in createUser",
+//       error: e.message,
+//     })
+//     res.status(500).send({
+//       msg: "Internal server error occured",
+//       error: e.message,
+//     })
+//   }
+// }
 
 const updateUser = async (req, res) => {
   const errors = validationResult(req)
@@ -78,7 +78,7 @@ const updateUser = async (req, res) => {
   try {
     const user = await User.findByIdAndUpdate(req.params.id, req.body) //we use req.id here instead of req.params.id because in case of user both will be same
     console.log(user)
-    res.status(200).send(user)
+    res.status(200).send({data:user,token:req.headers.authorization.split(" ")[1]})
   } catch (e) {
     console.log({
       msg: "Error occured in updateUser",
@@ -91,4 +91,4 @@ const updateUser = async (req, res) => {
   }
 }
 
-export { updateUser, getUser, createUser }
+export { updateUser, getUser }
