@@ -14,8 +14,7 @@ const verifyToken = async (req, res, next) => {
     next()
   } catch (e) {
     if (e.name === "TokenExpiredError" || token === "undefined") {
-      //check if refresh token is expired
-      // console.log(token)
+      //check if refresh token is expired or undefined
       console.log({
         msg: "Error occured in verifyToken",
         error: e.message,

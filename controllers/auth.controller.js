@@ -2,14 +2,13 @@ import UserAuth from "../models/UserAuth.js"
 import User from "../models/User.js"
 import { validationResult } from "express-validator"
 import bcrypt from "bcryptjs"
-import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
 import Stat from "../models/Stat.js"
 import { generateRefreshToken } from "../middleware/generateRefreshToken.js"
 import { generateAccessToken } from "../middleware/generateAccessToken.js"
 dotenv.config()
 
-const secret = process.env.JWT_SECRET
+
 
 const login = async (req, res) => {
   const errors = validationResult(req)
