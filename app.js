@@ -9,6 +9,7 @@ import statRouter from "./routes/stat.routes.js"
 import mongoose from "mongoose"
 import dotenv from "dotenv"
 import cookieParser from "cookie-parser"
+import morgan from "morgan"
 dotenv.config()
 
 const app = express()
@@ -21,6 +22,7 @@ app.use(
   })
 )
 app.use(express.json())
+app.use(morgan("combined")) // for logging
 
 app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/user", userRouter)
