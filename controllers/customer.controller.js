@@ -19,6 +19,7 @@ const getAllCustomers = async (req, res) => {
       userId: userId,
       client: { $regex: search, $options: "i" },
     })
+      .sort({ _id: -1 })
       .skip(page * limit)
       .limit(limit)
     res.status(200).send({ data: { pageCount, customers: customerList }, token: req.headers.authorization.split(" ")[1] })

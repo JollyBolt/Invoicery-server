@@ -19,6 +19,7 @@ const getAllProducts = async (req, res) => {
       userId: userId,
       name: { $regex: search, $options: "i" },
     })
+      .sort({ _id: -1 })
       .skip(page * limit)
       .limit(limit)
     res.status(200).send({data:{ pageCount,products:productList },token:req.headers.authorization.split(" ")[1]})
